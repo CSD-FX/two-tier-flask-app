@@ -6,13 +6,6 @@ pipeline {
                 git url: "https://github.com/CSD-FX/two-tier-flask-app.git" , branch: "master"
             }
         }
-        stage("Trivy File System Scan"){
-            steps{
-                script{
-                    trivy_fs()
-                }
-            }
-        }
         stage("Build"){
             steps{
                 sh "docker build --no-cache -t 2-tier-app ."
@@ -23,7 +16,7 @@ pipeline {
                 echo "skip"
             }
         }
-        stage("DockerHub-Pushing"){
+        stage("Docker-Hub-Push_Pull"){
             steps{
                 withCredentials([usernamePassword(
                     credentialsId: "DOCKER-HUB-CRED",
@@ -43,23 +36,4 @@ pipeline {
         }
         
     }
-    
-post {
-    success {
-        script {
-            emailext from: 'chandrashekar156ias@gmail.com',
-                    to: 'chandrashekar156ias@gmail.com',
-                    body: 'Build success for Demo CICD App',
-                    subject: 'Build success for Demo CICD App'
-        }
-    }
-    failure {
-        script {
-            emailext from: 'chandrashekar156ias@gmail.com',
-                    to: 'chandrashekar156ias@gmail.com',
-                    body: 'Build Failed for Demo CICD App',
-                    subject: 'Build Failed for Demo CICD App'
-        }
-    }
-}
 }
