@@ -6,6 +6,14 @@ pipeline {
                 git url:"https://github.com/CSD-FX/two-tier-flask-app.git" , branch: "master"
             }
         }
+
+        stage("Trivy File System Scan"){
+            steps{
+                script{
+                    trivy_fs()
+                }
+            }
+        }
         
         stage("Build"){
             steps{
