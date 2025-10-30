@@ -9,9 +9,7 @@ pipeline {
 
         stage("Trivy File System Scan"){
             steps{
-                script{
-                    trivy_fs()
-                }
+               sh "trivy fs . -o results.json"
             }
         }
         
